@@ -23,7 +23,7 @@ RUN echo "export PATH=$PATH:/usr/bin" >>/root/.bash_profile
 RUN echo "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/riscv64-linux-gnu/lib:/usr/lib/aarch64-linux-gnu" >>/root/.bash_profile
 
 WORKDIR /root
-COPY test/cplusplus.cpp /root/cplusplus.cpp
+COPY cplusplus.cpp /root/cplusplus.cpp
 
 EXPOSE 22
 
