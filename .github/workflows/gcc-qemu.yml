@@ -1,0 +1,64 @@
+name: Build and publish gcc-qemu
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "gcc-qemu/**"
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "gcc-qemu/**"
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}-gcc-qemu
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Add support for more platforms with QEMU (optional)
+      # https://github.com/docker/setup-qemu-action
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      # Set up BuildKit Docker container builder to be able to build
+      # multi-platform images and export cache
+      # https://github.com/docker/setup-buildx-action
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # Login against a Docker registry except on PR
+      # https://github.com/docker/login-action
+      - name: Log into registry ${{ env.REGISTRY }}
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get build time tag
+        id: buildtime
+        run: echo "build_time_tag=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
+
+      # Build and push Docker image with Buildx (don't push on PR)
+      # https://github.com/docker/build-push-action
+      - name: Build and push Docker image
+        id: build-and-push
+        uses: docker/build-push-action@v6
+        with:
+          context: "{{defaultContext}}:gcc-qemu"
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.buildtime.outputs.build_time_tag }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
