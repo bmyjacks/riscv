@@ -5,10 +5,12 @@ on:
     branches: ["main"]
     paths:
       - "gcc-qemu/**"
+      - ".github/workflows/gcc-qemu.yml"
   pull_request:
     branches: ["main"]
     paths:
       - "gcc-qemu/**"
+      - ".github/workflows/gcc-qemu.yml"
 
 env:
   REGISTRY: ghcr.io
