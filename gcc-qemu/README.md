@@ -7,7 +7,7 @@ This Dockerfile builds a RISC-V development environment with the `riscv-gnu-tool
 ### Build the Docker Image
 
 ```bash
-docker build -t gcc-qemu -f gcc-qemu.dockerfile .
+docker buildx build -t gcc-qemu .
 ```
 
 ### Run the Docker Container

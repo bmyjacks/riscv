@@ -4,4 +4,4 @@ This repository contains several Dockerfiles for building a RISC-V development e
 
 | Dockerfile | Packages | Docs |
 |------------|----------|-------------|
-| `gcc-qemu.dockerfile` | `riscv-gnu-toolchain`, `qemu` | [gcc-qemu](docs/gcc-qemu.md) |
+| `gcc-qemu.dockerfile` | `riscv-gnu-toolchain`, `qemu` | [gcc-qemu](gcc-qemu/README.md) |

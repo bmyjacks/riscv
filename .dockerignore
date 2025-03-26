@@ -1,9 +1,0 @@
-docs/
-.gitignore
-.git/
-
-.DS_Store
-Thumbs.db
-
-.vscode/
-.idea/
